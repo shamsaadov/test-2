@@ -42,4 +42,4 @@ export const fetchResponse = () => {
   };
 };
 
-export const selectAllBreeds = (state) => state.response.items
+

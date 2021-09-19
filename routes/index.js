@@ -31,7 +31,7 @@ router.get("/seed", async (req, res) => {
             console.log("100");
             clearInterval(interval);
           }
-          console.log("added");
+          console.log(`added `);
         } catch (e) {
           console.log(`err: ${e.toString()}`);
         }
@@ -39,15 +39,14 @@ router.get("/seed", async (req, res) => {
         console.log("ошибка при запросе");
       }
     }, 150);
-
   } catch (e) {
     console.log(e.message);
   }
 });
 
 router.get("/breeds", async (req, res) => {
-  const dog = await Dog.find()
-  return res.json(dog)
-}); 
+  const dog = await Dog.find().populate('breedId');
+  return res.json(dog);
+});
 
 module.exports = router;

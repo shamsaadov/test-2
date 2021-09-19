@@ -1,40 +1,49 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { fetchResponse, selectAllBreeds } from './redux/features/response'
+import { fetchResponse } from './redux/features/response'
+import Pagination from './Pagination'
+import Breeds from './Breeds'
 
 function Content() {
   const dispatch = useDispatch();
-  const breeds = useSelector(selectAllBreeds);
+  const breeds = useSelector(state => state.response.items)
+  const loading = useSelector((state => state.response.loading))
+  const [currentPage, setCurrentPage] = useState(1)
+  const [breedPerPage] = useState(10)
+
+  const lastBreedPage = currentPage + breedPerPage
+  const firstBreedPage = lastBreedPage - breedPerPage
+  const currentBreedPage = breeds.slice(firstBreedPage, lastBreedPage )
+  
+  const paginate = pageNumber => setCurrentPage(pageNumber)
   
   useEffect(() => {
     dispatch(fetchResponse());
-    console.log('render')
   }, [dispatch]);
-  
-  return (
-    <div>
-      <table style={{ margin: "auto", border: "1px solid #111" }}>
-        <thead>
-          <tr>
-            <td>Заголовок</td>
-            <td>Картинка</td>
-            <td>Порода</td>
-          </tr>
-        </thead>
-        <tbody style={{ marginTop: 25 }}>
-          <tr>
-            {breeds.map((item) => {
-              return (
-                <td>
-                  {item.title}
-                </td>
-              )
-            })}
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  );
+
+ if (loading){
+   return (
+     <h1 style={{textAlign: 'center'}}>
+       Идет загрузка...
+     </h1>
+   )
+ }else {
+   return (
+     <div>
+      <Breeds
+      breeds={currentBreedPage}
+      loading={loading}
+      />
+       <Pagination
+       breedPerPage={breedPerPage}
+       totalBreeds={breeds.length}
+       paginate={paginate}
+       />
+
+     </div>
+   );
+ }
 }
+// ToDo сделать границу у таблицы . Сделать пагинацию . Сделать поиск . Сделать фильтрацию
 
 export default Content;
