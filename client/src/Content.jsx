@@ -6,12 +6,12 @@ import Breeds from './Breeds'
 
 function Content() {
   const dispatch = useDispatch();
-  const breeds = useSelector(state => state.response.items)
+  const breeds = useSelector((state) => state.response.items);
   const loading = useSelector((state => state.response.loading))
   const [currentPage, setCurrentPage] = useState(1)
   const [breedPerPage] = useState(10)
 
-  const lastBreedPage = currentPage + breedPerPage
+  const lastBreedPage = currentPage * breedPerPage
   const firstBreedPage = lastBreedPage - breedPerPage
   const currentBreedPage = breeds.slice(firstBreedPage, lastBreedPage )
   
@@ -31,6 +31,7 @@ function Content() {
    return (
      <div>
       <Breeds
+        find={breeds}
       breeds={currentBreedPage}
       loading={loading}
       />
