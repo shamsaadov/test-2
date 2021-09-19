@@ -14,7 +14,7 @@ router.get("/seed", async (req, res) => {
       );
       if (response.status === 200) {
         const [, breed, title] = response.data.message.match(
-          /(\w+)\/([\w_-]+)\.jpg$/
+          /([\w+_-]+)\/([\w_-]+)\.jpg$/
         );
         let breedId;
         const candidate = await Breed.findOne({ name: breed });
@@ -44,9 +44,36 @@ router.get("/seed", async (req, res) => {
   }
 });
 
+router.get("/dogs", async (req, res) => {
+  const { search } = req.query;
+
+  const page = parseInt(req.query.page, 10) || 1;
+  const limit = 10;
+  let count;
+
+  const findCondition = {};
+
+  if (search) {
+    findCondition.name = new RegExp(search);
+    count = await Dog.count(findCondition);
+  } else {
+    count = await Dog.countDocuments();
+  }
+
+  const dogs = await Dog.find(findCondition)
+    .limit(limit)
+    .skip(page * limit - limit)
+    .populate("breedId");
+
+  return res.json({
+    count,
+    dogs,
+  });
+});
+
 router.get("/breeds", async (req, res) => {
-  const dog = await Dog.find().populate('breedId');
-  return res.json(dog);
+  const breeds = await Breed.find();
+  res.json(breeds);
 });
 
 module.exports = router;
