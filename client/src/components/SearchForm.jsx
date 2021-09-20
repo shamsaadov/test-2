@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import SearchResult from './SearchResult'
 
 function SearchForm({ search, setSearch, count }) {
@@ -18,4 +18,4 @@ function SearchForm({ search, setSearch, count }) {
   );
 }
 
-export default SearchForm;
+export default memo(SearchForm);

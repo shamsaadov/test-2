@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {memo} from 'react'
 
 function SearchResult({ search, count }) {
   if (!search.length) return null;
@@ -10,4 +10,4 @@ function SearchResult({ search, count }) {
   );
 }
 
-export default SearchResult
+export default memo(SearchResult)

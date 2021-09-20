@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 
 function TableHead() {
   return (
@@ -13,4 +13,4 @@ function TableHead() {
   );
 }
 
-export default TableHead;
+export default memo(TableHead);

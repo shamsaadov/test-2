@@ -5,7 +5,7 @@ const Dog = require("../models/Dog");
 
 const router = Router();
 
-router.get("/seed", async (req, res) => {
+router.get("/seed", async () => {
   try {
     const interval = setInterval(async () => {
       const breedCount = await Dog.countDocuments();
@@ -26,7 +26,7 @@ router.get("/seed", async (req, res) => {
         }
         try {
           if (breedCount <= 100) {
-            const dog = await Dog.create({ name: title, breedId });
+            await Dog.create({ name: title, breedId });
           } else {
             console.log("100");
             clearInterval(interval);
@@ -46,8 +46,8 @@ router.get("/seed", async (req, res) => {
 
 router.get("/dogs", async (req, res) => {
   const { search } = req.query;
-
   const page = parseInt(req.query.page, 10) || 1;
+
   const limit = 10;
   let count;
 
@@ -65,15 +65,7 @@ router.get("/dogs", async (req, res) => {
     .skip(page * limit - limit)
     .populate("breedId");
 
-  return res.json({
-    count,
-    dogs,
-  });
-});
-
-router.get("/breeds", async (req, res) => {
-  const breeds = await Breed.find();
-  res.json(breeds);
+  return res.json({ count, dogs });
 });
 
 module.exports = router;

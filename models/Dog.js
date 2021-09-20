@@ -13,4 +13,5 @@ const dogSchema = new mongoose.Schema({
 });
 
 const Dog = mongoose.model("Dog", dogSchema);
+
 module.exports = Dog;

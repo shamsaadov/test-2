@@ -1,15 +1,15 @@
-import { useDogs } from "./hooks/useDogs";
-import TableHead from "./components/TableHead";
-import TableBody from "./components/TableBody";
-import TableFoot from "./components/TableFoot";
+import { useDogs } from "../hooks/useDogs";
+import TableHead from "./TableHead";
+import TableBody from "./TableBody";
+import TableFoot from "./TableFoot";
 import { useState } from "react";
-import SearchForm from "./components/SearchForm";
+import SearchForm from "./SearchForm";
 
 function App() {
   const [search, setSearch] = useState("");
 
-  const [loading, error, dogs, nextPage, prevPage, page, count] =
-    useDogs(search);
+  //prettier-ignore
+  const [loading, error, dogs, nextPage, prevPage, page, count] = useDogs(search);
 
   if (error) {
     return (
@@ -20,19 +20,19 @@ function App() {
   }
 
   return (
-    <div>
+    <>
       <SearchForm search={search} setSearch={setSearch} count={count} />
       <table className="table table-striped">
         <TableHead />
         <TableBody loading={loading} dogs={dogs} page={page} />
+        <TableFoot
+          nextPage={nextPage}
+          prevPage={prevPage}
+          count={count}
+          page={page}
+        />
       </table>
-      <TableFoot
-        nextPage={nextPage}
-        prevPage={prevPage}
-        count={count}
-        page={page}
-      />
-    </div>
+    </>
   );
 }
 
